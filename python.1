@@ -1,0 +1,31 @@
+ 2️⃣ kubectl get svc
+👉 What it shows:
+
+All Services in the namespace.
+
+Services = how Pods are exposed or connected.
+
+Example output:
+NAME         TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+myapp-svc    ClusterIP   10.96.12.45     <none>        80/TCP         10m
+db-svc       ClusterIP   10.96.55.23     <none>        5432/TCP       10m
+web-svc      LoadBalancer 10.96.88.10    34.93.12.4    80:30007/TCP   5m
+
+
+When you see CrashLoopBackOff, say:
+
+"First I check logs, then describe the Pod to see events like OOMKilled or probe failures, then verify resources, config, and connectivity."
+
+curl:-
+
+curl is a networking testing tool used in K8s to verify pod, service, API, and internet connectivity.
+
+What is Ingress?
+
+Ingress is a Kubernetes object that manages external access to services, mainly HTTP and HTTPS.
+
+Ingress = rules for traffic
+
+An Ingress Controller is:
+
+A Load Balancer that runs inside Kubernetes and follows Ingress rules.
