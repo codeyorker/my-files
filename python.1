@@ -1,4 +1,4 @@
- 2️⃣ kubectl get svc
+2️⃣ kubectl get svc
 👉 What it shows:
 
 All Services in the namespace.
@@ -29,3 +29,24 @@ Ingress = rules for traffic
 An Ingress Controller is:
 
 A Load Balancer that runs inside Kubernetes and follows Ingress rules.
+
+
+CrashLoopBackOff is almost always one of:
+
+💥 App crash
+
+🧠 OOMKilled
+
+⚙️ Bad config/env
+
+🔍 Failing health probe
+
+🔌 Dependency unavailable
+
+Start with logs → exit code → events and you’ll find it fast.
+
+
+
+
+
+
