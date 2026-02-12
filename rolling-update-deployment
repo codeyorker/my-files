@@ -1,9 +1,3 @@
- Rolling Update Deployment Strategy (Kubernetes)
- A Rolling Update is the default deployment strategy in Kubernetes.
-w
-👉 It updates your application gradually, without downtime.
-
-:- Rolling update strategy is zero Down time strategy for deployment in K8S.
 
 
 
