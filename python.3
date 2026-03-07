@@ -1,0 +1,134 @@
+Here’s a simple step-by-step guide to:
+
+Install Docker
+
+Run a Java-based web application
+
+Expose it publicly
+
+I’ll assume you're using Ubuntu/Linux (tell me if you’re using Windows).
+
+✅ Step 1: Install Docker (Ubuntu)
+1️⃣ Update system
+sudo apt update
+2️⃣ Install required packages
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+3️⃣ Add Docker’s official GPG key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+4️⃣ Add Docker repository
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) stable"
+5️⃣ Install Docker
+sudo apt update
+sudo apt install docker-ce -y
+6️⃣ Verify installation
+docker --version
+✅ Step 2: Create & Run Java Web App in Docker
+
+Let’s assume:
+
+You have a Spring Boot JAR file like: app.jar
+
+It runs on port 8080
+
+📌 Option 1: Run directly without Dockerfile
+docker run -d \
+  -p 8080:8080 \
+  --name java-app \
+  openjdk:17 \
+  java -jar /app.jar
+
+👉 This works only if JAR is inside container.
+Better method is using Dockerfile 👇
+
+📌 Option 2 (Recommended): Using Dockerfile
+1️⃣ Create Dockerfile
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY app.jar app.jar
+
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","app.jar"]
+2️⃣ Build Docker Image
+docker build -t my-java-app .
+3️⃣ Run Container
+docker run -d -p 8080:8080 --name java-container my-java-app
+
+Now access locally:
+
+http://localhost:8080
+✅ Step 3: Make Application Publicly Available
+
+There are 3 ways:
+
+🔹 Option A: If Running on Cloud VM (AWS / Azure / GCP)
+
+Example on Amazon Web Services
+
+Open Security Group
+
+Allow inbound traffic:
+
+Port: 8080
+
+Source: 0.0.0.0/0
+
+Then access:
+
+http://<your-public-ip>:8080
+🔹 Option B: On Local Machine (Port Forwarding)
+
+Login to router
+
+Enable port forwarding:
+
+External port: 80
+
+Internal IP: your system IP
+
+Internal port: 8080
+
+Then access using:
+
+http://<your-public-ip>
+
+⚠ Not recommended for production.
+
+🔹 Option C (Best for Dev/Test): Use Ngrok
+
+Install Ngrok:
+
+sudo snap install ngrok
+
+Run:
+
+ngrok http 8080
+
+It will give you a public URL like:
+
+https://abcd1234.ngrok.io
+🔥 Production Recommended Setup
+
+Instead of exposing 8080 directly:
+
+Use Nginx Reverse Proxy
+
+Use HTTPS (SSL)
+
+Deploy on Cloud VM
+
+Use Docker Compose
+
+💡 For Interview (DevOps/NOC) Answer
+
+If asked:
+
+"How do you deploy and expose a Java app using Docker?"
+
+You can say:
+
+I containerize the Java application using a Dockerfile with OpenJDK base image, build the image, run container exposing port 8080, configure firewall/security groups, and optionally use reverse proxy with SSL for public access.
