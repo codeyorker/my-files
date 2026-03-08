@@ -1,0 +1,202 @@
+2 - Worker Nodes ( t2.micro instances )
+
+++++++++++++++++++++ Master & Worker - Common Commands Execution Start ++++++++++++++++++++
+
+Step-1 : Install Docker
+
+$ sudo apt-get update
+$ sudo apt-get install docker.io
+$ docker --version
+$ sudo usermod -aG docker $USER
+$ sudo systemctl start docker
+$ sudo systemctl enable docker
+
+
+Step-2 : Installing Kubernetes
+
+# install curl
+$ sudo apt install curl
+
+# Add the GPG Kubernetes key with the command:
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+
+
+Step-2 : Installing Kubernetes
+
+# install curl
+$ sudo apt install curl
+
+# Add the GPG Kubernetes key with the command:
+$ curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+# To add the Xenial Kubernetes repository
+$ sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+
+# Installing Kubeadm (Kubernetes Admin)
+$ sudo apt-get install kubeadm kubelet kubectl kubernetes-cni
+
+# Run the below command to check whether the versions of the components installed are compatible
+$ sudo apt-mark hold kubeadm kubelet kubectl kubernetes-cni
+
+# Check Kubeadm version
+$ kubeadm version
+
+
+
+
+No — the commands in your screenshot are NOT the latest anymore. ❌
+Some of them are deprecated and may fail on new Ubuntu versions.
+
+Problems in your commands
+
+1️⃣ apt-key is deprecated
+
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+This method is old and removed in modern systems.
+
+2️⃣ Old Kubernetes repository
+
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+
+This repo (apt.kubernetes.io) was deprecated and frozen in 2023 and removed in 2024.
+
+3️⃣ Kubernetes now uses a new repository
+
+https://pkgs.k8s.io
+✅ Latest Kubernetes Install Commands (2025)
+
+Use these instead on Ubuntu 20.04 / 22.04 / 24.04
+
+1️⃣ Install required packages
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+2️⃣ Add Kubernetes GPG key
+sudo mkdir -p /etc/apt/keyrings
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key \
+| sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+3️⃣ Add Kubernetes repository
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' \
+| sudo tee /etc/apt/sources.list.d/kubernetes.list
+4️⃣ Install Kubernetes components
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+5️⃣ Prevent automatic upgrades
+sudo apt-mark hold kubelet kubeadm kubectl
+6️⃣ Check version
+kubeadm version
+
+💡 Important for interviews / DevOps labs
+
+Tools installed:
+
+kubeadm → create Kubernetes cluster
+
+kubelet → runs containers on nodes
+
+kubectl → command tool to manage cluster
+
+✅ If you want, I can also show you the FULL Kubernetes setup on AWS (Master + Worker nodes step-by-step) — the exact commands used in DevOps training and interviews. 🚀
+
+We are not found the kubeadm 
+
+
+The error you see:
+
+Unable to locate package kubeadm
+Unable to locate package kubelet
+Unable to locate package kubectl
+Unable to locate package kubernetes-cni
+
+means the Kubernetes repository is not added to your system, so Ubuntu cannot find these packages. ⚠️
+
+Your old guide used the deprecated repository, so it no longer works.
+
+✅ Fix (Run these commands on Master & Worker)
+1️⃣ Update system
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+2️⃣ Add Kubernetes key
+sudo mkdir -p /etc/apt/keyrings
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key \
+| sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+3️⃣ Add Kubernetes repository
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" \
+| sudo tee /etc/apt/sources.list.d/kubernetes.list
+4️⃣ Update again
+sudo apt-get update
+5️⃣ Install Kubernetes packages
+sudo apt-get install -y kubelet kubeadm kubectl
+6️⃣ Lock versions
+sudo apt-mark hold kubelet kubeadm kubectl
+7️⃣ Check installation
+kubeadm version
+kubectl version --client
+
+💡 Why your command failed
+
+Because you ran:
+
+sudo apt-mark hold kubeadm kubelet kubectl kubernetes-cni
+
+before installing them, so Ubuntu couldn't find those packages.
+
+✅ If you want, I can also show you the complete Kubernetes cluster setup on AWS (Master + Worker nodes) including:
+
+disable swap
+
+container runtime setup
+
+kubeadm init
+
+kubeadm join
+
+This is the exact real DevOps interview setup. 🚀
+
+just into text format 
+
+Here is the text converted from the image:
+
+# Check Kubeadm version
+$ kubeadm version
+
+# Disable swap memory
+$ sudo swapoff -a
+
+$ sudo systemctl daemon-reload
+$ sudo systemctl start kubelet
+$ sudo systemctl enable kubelet.service
+
+++++++++++++++++++++ Master & Slave Common Commands Execution End ++++++++++++++++++++
+
+++++++++++++++++++++ Only Master Node Commands Execution Start ++++++++++++++++++++
+
+Step-3 : Running and Deploying Kubernetes
+in text format 
+
+Here is the text converted from the image:
+
+++++++++++++++++++++ Only Master Node Commands Execution Start ++++++++++++++++++++
+
+Step-3 : Running and Deploying Kubernetes
+
+# Initialize kubernetes on Master Node
+$ sudo kubeadm init
+
+# You need to run the following as a normal user to start using your cluster
+
+$ mkdir -p $HOME/.kube
+$ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+$ sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+#check nodes connected to cluster
+$ kubectl get nodes
+
+# Deploy Pod Network to Cluster
+$ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+# Get worker token to add workers to cluster
+$ kubeadm token create --print-join-command
