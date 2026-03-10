@@ -1,0 +1,18 @@
+5️⃣ How Kong Works (Steps)
+
+1️⃣ User sends request
+2️⃣ Request goes to Kong
+3️⃣ Kong checks:
+
+Authentication
+
+Rate limits
+
+Plugins
+
+4️⃣ Kong forwards request to backend service
+5️⃣ Response comes back to user
+
+✅ In one line:
+
+Kong is a gateway that sits between users and backend services to manage, secure, and control API traffic.
