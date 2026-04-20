@@ -1,0 +1,41 @@
+what is K8S service ? 
+
+:- K8S service is responsible to make our pods discoverable / accessible inside the cluster and out side the cluster.
+
+In K8S there is three services are available.
+
+ClusterIP: 
+
+NodePort: 
+
+LoadBalancer: 
+
+
+
+apiVersion: v1
+kind: service
+matadata:
+     name: javawebappsvc
+spec: 
+   type: ClusterIP
+   selector: 
+       app: javawebapp
+   ports: 
+   - port: 80
+     targetPort: 8080
+
+
+:- Using Cluster IP we can access the pods 
+
+ClusterIP:- using cluster ip we can expose the pods with in cluster 
+
+
+
+NodePort: if you wants to expose the pod outside the cluster we need to node pods 
+
+ 
+ 
+
+
+
+
