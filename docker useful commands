@@ -1,0 +1,22 @@
+let's try once 
+
+# Build image
+docker build -t myapp .
+
+# Run container
+docker run -d --name myapp-container -p 8080:80 myapp
+
+# Check running containers
+docker ps
+
+# View logs
+docker logs myapp-container
+
+# Access container shell
+docker exec -it myapp-container bash
+
+# Stop container
+docker stop myapp-container
+
+# Remove container
+docker rm myapp-container
